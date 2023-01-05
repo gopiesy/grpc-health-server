@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+set -o xtrace
+
+# get protobuf go plugin
+go get -u google.golang.org/protobuf
+
+# Get protoc command
+if hash protoc 2>/dev/null; then
+    protoc -I ./ health.proto --go_out=./ --go_opt=Mhealth.proto=. --go-grpc_out=./ --go-grpc_opt=Mhealth.proto=.
+else
+    echo Installing protoc command...
+    wget -O protoc.zip https://github.com/google/protobuf/releases/download/v3.6.0/protoc-3.6.0-linux-x86_64.zip
+    unzip protoc.zip
+    protoc -I ./ health.proto --go_out=./ --go_opt=Mhealth.proto=. --go-grpc_out=./ --go-grpc_opt=Mhealth.proto=.
+fi
