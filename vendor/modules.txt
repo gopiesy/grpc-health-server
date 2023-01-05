@@ -5,9 +5,6 @@ github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
-# github.com/gopiesy/project-protos v0.5.0
-## explicit; go 1.17
-github.com/gopiesy/project-protos/policies
 # golang.org/x/net v0.0.0-20200822124328-c89045814202
 ## explicit; go 1.11
 golang.org/x/net/http/httpguts
@@ -75,8 +72,8 @@ google.golang.org/grpc/serviceconfig
 google.golang.org/grpc/stats
 google.golang.org/grpc/status
 google.golang.org/grpc/tap
-# google.golang.org/protobuf v1.27.1
-## explicit; go 1.9
+# google.golang.org/protobuf v1.28.1
+## explicit; go 1.11
 google.golang.org/protobuf/encoding/prototext
 google.golang.org/protobuf/encoding/protowire
 google.golang.org/protobuf/internal/descfmt

@@ -1,4 +1,4 @@
-GO_PKG_DIRS  := $(subst $(shell go list -e -m),.,$(shell go list ./... | grep -v /vendor | grep -v /health-server ))
+GO_PKG_DIRS  := $(subst $(shell go list -e -m),.,$(shell go list ./... | grep -v /proto | grep -v /vendor | grep -v /health-server ))
 
 all: clean fmt lint
 	go build -ldflags="-s -w" -o server $(GO_PKG_DIRS)

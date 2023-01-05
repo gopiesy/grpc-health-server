@@ -3,7 +3,6 @@ module github.com/gopiesy/grpc-health-server
 go 1.17
 
 require (
-	github.com/gopiesy/project-protos v0.5.0
 	google.golang.org/grpc v1.44.0
 	google.golang.org/protobuf v1.28.1
 )

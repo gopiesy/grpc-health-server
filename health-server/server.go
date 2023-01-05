@@ -1,49 +1,25 @@
 package server
 
 import (
-	"fmt"
-	"time"
+	"context"
 
-	"io"
-	"log"
-
-	"github.com/gopiesy/project-protos/policies"
-	"google.golang.org/protobuf/types/known/timestamppb"
+	health "github.com/gopiesy/grpc-health-server/proto"
 )
 
-type PolicyServiceServer struct {
-	policies.UnimplementedPolicyServiceServer
+type HealthServer struct {
+	health.UnimplementedHealthServer
 }
 
-func (p PolicyServiceServer) StreamSnapshots(stream policies.PolicyService_StreamSnapshotsServer) error {
-
-	streamCpy := stream
-	go func(stream policies.PolicyService_StreamSnapshotsServer) {
-		for {
-			status, err := stream.Recv()
-			if err == io.EOF {
-				log.Println("EOF received and client exited")
-				return
-			} else if err != nil {
-				log.Panic(err)
-			} else {
-				// received status
-				log.Println("Recv Status: ", status.GetSnapshotName())
-			}
+func (h HealthServer) Check(ctx context.Context, req *health.HealthCheckRequest) (*health.HealthCheckResponse, error) {
+	if req != nil {
+		if req.Service == "health" {
+			return &health.HealthCheckResponse{Status: health.HealthCheckResponse_SERVING}, nil
 		}
-	}(streamCpy)
-
-	for {
-		now := timestamppb.Now()
-		name := fmt.Sprintf("NewSnapshot.%d", now.Seconds)
-		if err := stream.Send(&policies.Snapshot{Name: name, Time: now, Data: nil}); err != nil {
-			return err
-		}
-		fmt.Println("Send NewSnapshot: ", name)
-		<-time.After(time.Duration(time.Second * 2))
+		return &health.HealthCheckResponse{Status: health.HealthCheckResponse_SERVICE_UNKNOWN}, nil
 	}
+	return &health.HealthCheckResponse{Status: health.HealthCheckResponse_UNKNOWN}, nil
 }
 
-func NewPolicyService() PolicyServiceServer {
-	return PolicyServiceServer{}
+func NewHealthServer() HealthServer {
+	return HealthServer{}
 }
